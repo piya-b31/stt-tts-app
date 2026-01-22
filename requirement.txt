@@ -2,4 +2,6 @@ streamlit
 speechrecognition
 gtts
 requests
-streamlit-navigation-bar
+git+https://github.com/victoryhb/streamlit-navigation-bar.git
+
+
