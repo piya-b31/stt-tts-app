@@ -1,54 +1,57 @@
 import os
-
 import streamlit as st
-from streamlit_navigation_bar import st_navbar
+from streamlit_option_menu import option_menu
 
 import pages as pg
 
 st.set_page_config(initial_sidebar_state="collapsed")
 
+# Custom CSS to style the nav bar like your original
+st.markdown("""
+    <style>
+        /* Hide default streamlit sidebar toggle */
+        [data-testid="collapsedControl"] { display: none; }
+        
+        /* Nav bar styling */
+        .nav-container {
+            background-color: grey;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
-pages = ["Home","Text to Speech", "Speech to Text", "About"]
-parent_dir = os.path.dirname(os.path.abspath(__file__))
-# logo_path = os.path.join(parent_dir, "cubes.svg")
-
-styles = {
-    "nav": {
-        "background-color": "Grey",
-        "justify-content": "center",
-    },
-    # "img": {
-    #     "padding-right": "14px",
-    # },
-    "span": {
-        "color": "black",
-        "padding": "14px",
-    },
-    "active": {
-        "background-color": "black",
-        "color": "var(--text-color)",
-        "font-weight": "normal",
-        "padding": "14px",
+# Navigation bar
+page = option_menu(
+    menu_title=None,
+    options=["Home", "Text to Speech", "Speech to Text", "About"],
+    icons=["house", "volume-up", "mic", "info-circle"],
+    orientation="horizontal",
+    styles={
+        "container": {
+            "padding": "0px",
+            "background-color": "grey",
+            "justify-content": "center",
+        },
+        "nav-link": {
+            "color": "black",
+            "padding": "14px",
+            "font-size": "15px",
+        },
+        "nav-link-selected": {
+            "background-color": "black",
+            "color": "white",
+            "font-weight": "normal",
+        },
     }
-}
-options = {
-    "show_menu": False,
-    "show_sidebar": False,
-}
-
-page = st_navbar(
-    pages,
-    # logo_path=logo_path,
-    styles=styles,
-    options=options,
 )
 
+# Page routing
 functions = {
     "Home": pg.show_home,
     "Text to Speech": pg.tts,
     "Speech to Text": pg.stt,
-    "About": pg.about
+    "About": pg.about,
 }
+
 go_to = functions.get(page)
 if go_to:
     go_to()
