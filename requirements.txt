@@ -2,4 +2,4 @@ streamlit
 speechrecognition
 gtts
 requests
-streamlit-option-menu
+streamlit-navigation-bar==3.0.0
