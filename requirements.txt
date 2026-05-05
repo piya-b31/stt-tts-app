@@ -3,3 +3,4 @@ speechrecognition
 gtts
 requests
 streamlit-option-menu
+pyaudio
