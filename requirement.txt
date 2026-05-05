@@ -1,7 +1,0 @@
-streamlit
-speechrecognition
-gtts
-requests
-git+https://github.com/victoryhb/streamlit-navigation-bar.git
-
-
