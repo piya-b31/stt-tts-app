@@ -1,3 +1,6 @@
+import os
+
+
 def stt():
     import streamlit as st
     import speech_recognition as sr
@@ -29,7 +32,7 @@ def stt():
 
     WHISPER_URL = "https://platform.qubrid.com/api/v1/qubridai/audio/transcribe"
     HEADERS = {
-        "Authorization": "Bearer k_55416db50a74.eANgqtFuzkwspG2Z8hsgFYEDYlLUWDLUdwd3CBW4xMiO6jvJaDupZw"
+        "Authorization": f"Bearer {st.secrets.get('WHISPER_API_KEY') or os.getenv('WHISPER_API_KEY')}"
     }
 
     uploaded_file = st.file_uploader("Choose an audio file", type=["wav", "mp3", "m4a"])
