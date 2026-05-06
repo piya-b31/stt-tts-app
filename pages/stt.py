@@ -1,16 +1,23 @@
+import streamlit as st
+from groq import Groq
 import os
+import tempfile
+import speech_recognition as sr
 
+r = sr.Recognizer()
+
+# Safe way - won't crash if secrets file missing
+try:
+    api_key = st.secrets["GROQ_API_KEY"]
+except:
+    api_key = os.getenv("GROQ_API_KEY")
+
+client = Groq(api_key=api_key)
 
 def stt():
-    import streamlit as st
-    import speech_recognition as sr
-    import requests
-
     st.title("🎙️ Speech to Text App")
 
-    r = sr.Recognizer()
-
-    # -------------------- LIVE SPEECH --------------------
+    # --- MIC SECTION ---
     st.subheader("Speak & Transcribe")
 
     if st.button("Start Recording"):
@@ -27,35 +34,29 @@ def stt():
         except sr.RequestError:
             st.error("API unavailable. Check your internet connection.")
 
-    # -------------------- FILE UPLOAD --------------------
-    st.subheader("Upload Audio")
+    # --- FILE UPLOAD SECTION ---
+    st.subheader("📁 Upload Audio")
 
-    WHISPER_URL = "https://platform.qubrid.com/api/v1/qubridai/audio/transcribe"
-    HEADERS = {
-        "Authorization": f"Bearer {st.secrets.get('WHISPER_API_KEY') or os.getenv('WHISPER_API_KEY')}"
-    }
+    audio_file = st.file_uploader(
+        "Choose an audio file",
+        type=["mp3", "wav", "m4a", "mp4", "mpeg4"]
+    )
 
-    uploaded_file = st.file_uploader("Choose an audio file", type=["wav", "mp3", "m4a"])
+    if audio_file and st.button("Transcribe audio"):
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
+            tmp.write(audio_file.read())
+            tmp_path = tmp.name
 
-    if uploaded_file is not None:
-        with open("temp_audio.mp3", "wb") as f:
-            f.write(uploaded_file.read())
-
-        if st.button("Transcribe audio"):
-            with st.spinner("Whisper is transcribing..."):
-                files = {"file": open("temp_audio.mp3", "rb")}
-                data = {"model": "openai/whisper-large-v3"}
-
-                response = requests.post(
-                    WHISPER_URL,
-                    headers=HEADERS,
-                    files=files,
-                    data=data
-                )
-
-            if response.status_code == 200:
-                result = response.json()
-                st.success("Transcription:")
-                st.write(result["text"])
-            else:
-                st.error("Failed to transcribe audio with Whisper API.")
+        with st.spinner("Transcribing..."):
+            try:
+                with open(tmp_path, "rb") as f:
+                    result = client.audio.transcriptions.create(
+                        model="whisper-large-v3",
+                        file=f,
+                    )
+                st.success("✅ Transcription:")
+                st.write(result.text)
+            except Exception as e:
+                st.error(f"Failed to transcribe: {str(e)}")
+            finally:
+                os.unlink(tmp_path)  # Clean up temp filev
