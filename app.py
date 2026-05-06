@@ -3,7 +3,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 
 import pages as pg
-
+st.set_page_config(page_title="AI Voice Assistant", page_icon="🎙️")
 st.set_page_config(initial_sidebar_state="collapsed")
 
 # Custom CSS to style the nav bar like your original
