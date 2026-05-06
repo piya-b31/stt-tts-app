@@ -10,7 +10,7 @@ def tts():
     text_input = st.text_area("Enter text to convert into speech")
 
     # -------- OPTION 2: UPLOAD TEXT FILE --------
-    st.subheader("Or upload a text file")
+    st.subheader("📁 Upload a text file")
     uploaded_txt = st.file_uploader("Upload a .txt file", type=["txt"])
 
     final_text = ""
