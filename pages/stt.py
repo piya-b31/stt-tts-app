@@ -35,10 +35,10 @@ def stt():
                 st.error("Sorry, could not understand the audio.")
             except sr.RequestError:
                 st.error("Could not connect to Google Speech service.")
-            except OSError:
-                st.warning("🖥️ Microphone is not available on Streamlit Cloud. Please use the **Upload Audio** section below instead.")
-            except Exception as e:
-                st.warning("🖥️ Microphone is not available on Streamlit Cloud. Please use the **Upload Audio** section below instead.")
+        except OSError:
+            st.warning("🖥️ Microphone is not available on Streamlit Cloud. Please use the **Upload Audio** section below instead.")
+        except Exception as e:
+            st.warning("🖥️ Microphone is not available on Streamlit Cloud. Please use the **Upload Audio** section below instead.")
 
     # --- FILE UPLOAD SECTION ---
     st.subheader("📁 Upload Audio")
