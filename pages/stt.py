@@ -38,7 +38,7 @@ def stt():
         except OSError:
             st.warning(" Microphone is not available on Streamlit Cloud. Please use the **Upload Audio** section below instead.")
         except Exception as e:
-            st.warning(' Microphone is not available on Streamlit Cloud. Please use the **Upload Audio** section below instead.")
+            st.warning(" Microphone is not available on Streamlit Cloud. Please use the **Upload Audio** section below instead.")
 
     # --- FILE UPLOAD SECTION ---
     st.subheader("📁 Upload Audio")
