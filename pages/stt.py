@@ -30,15 +30,15 @@ def stt():
                 audio = r.listen(source, timeout=7)
             try:
                 text = r.recognize_google(audio)
-                st.success(f"✅ You said: {text}")
+                st.success(f"You said: {text}")
             except sr.UnknownValueError:
                 st.error("Sorry, could not understand the audio.")
             except sr.RequestError:
                 st.error("Could not connect to Google Speech service.")
         except OSError:
-            st.warning("🖥️ Microphone is not available on Streamlit Cloud. Please use the **Upload Audio** section below instead.")
+            st.warning(" Microphone is not available on Streamlit Cloud. Please use the **Upload Audio** section below instead.")
         except Exception as e:
-            st.warning("🖥️ Microphone is not available on Streamlit Cloud. Please use the **Upload Audio** section below instead.")
+            st.warning(' Microphone is not available on Streamlit Cloud. Please use the **Upload Audio** section below instead.")
 
     # --- FILE UPLOAD SECTION ---
     st.subheader("📁 Upload Audio")
@@ -60,7 +60,7 @@ def stt():
                         model="whisper-large-v3",
                         file=f,
                     )
-                st.success("✅ Transcription:")
+                st.success(" Transcription:")
                 st.write(result.text)
             except Exception as e:
                 st.error(f"Failed to transcribe: {str(e)}")
