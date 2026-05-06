@@ -21,18 +21,24 @@ def stt():
     st.subheader("Speak & Transcribe")
 
     if st.button("Start Recording"):
+    try:
+        import speech_recognition as sr
+        r = sr.Recognizer()
         with sr.Microphone() as source:
             st.info("Listening... Please speak now")
-            audio = r.listen(source)
-
+            r.adjust_for_ambient_noise(source, duration=1)
+            audio = r.listen(source, timeout=7)
         try:
             text = r.recognize_google(audio)
-            st.success("Transcription:")
-            st.write(text)
+            st.success(f"✅ You said: {text}")
         except sr.UnknownValueError:
             st.error("Sorry, could not understand the audio.")
         except sr.RequestError:
-            st.error("API unavailable. Check your internet connection.")
+            st.error("Could not connect to Google Speech service.")
+    except OSError:
+        st.warning("🖥️ Microphone is not available on Streamlit Cloud. Please use the **Upload Audio** section below instead.")
+    except Exception as e:
+        st.warning("🖥️ Microphone is not available on Streamlit Cloud. Please use the **Upload Audio** section below instead.")
 
     # --- FILE UPLOAD SECTION ---
     st.subheader("📁 Upload Audio")
